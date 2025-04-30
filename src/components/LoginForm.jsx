@@ -14,45 +14,88 @@ export default function LoginForm({
   error,
   setError,
   setShowResetModal,
+  rememberMe,
+  setRememberMe,
 }) {
   return (
-    <form className="formContainer" onSubmit={handleLogin}>
-      <h2 className="formTitle">Login your account</h2>
+    <form
+      className="formContainer"
+      onSubmit={handleLogin}
+      aria-labelledby="login-form-title"
+    >
+      <h1 id="login-form-title" className="formTitle">
+        Login to your account
+      </h1>
 
-      {error && <p className="error-message">{error}</p>}
+      {error && (
+        <p
+          className="error-message"
+          id="login-error"
+          role="alert"
+          aria-live="assertive"
+        >
+          {error}
+        </p>
+      )}
 
-      <div className="input-group">
-        <label htmlFor="email">Your email:</label>
+      <div className="input-group email-group">
+        <label className="labeForm" htmlFor="email">
+          Your email:
+        </label>
         <input
           id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          aria-invalid={!!error}
+          aria-describedby={error ? "login-error" : undefined}
+          autoComplete="email"
+          placeholder="ex: nome@email.com"
         />
       </div>
 
       <div className="input-group password-group">
-        <label htmlFor="password">Your password:</label>
+        <label className="labeForm" htmlFor="password">
+          Your password:
+        </label>
         <input
           id="password"
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
+          aria-required="true"
+          autoComplete="current-password"
         />
         <EyePassword
           showPassword={showPassword}
           toggleShowPassword={() => setShowPassword((v) => !v)}
+          ariaControls="password"
         />
       </div>
 
-      <ForgetPassword onClick={() => {
-        setError("");
-        setShowResetModal(true);
-      }} />
+      <ForgetPassword
+        onClick={() => {
+          setError("");
+          setShowResetModal(true);
+        }}
+      />
+      <div className="remember-me-group">
+        <label>
+          <input
+            type="checkbox"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          />
+          Lembrar-me
+        </label>
+      </div>
 
-      <button type="submit" className="btn-login">
+      <button
+        type="submit"
+        className="btn-login"
+        aria-label="Login to your account"
+      >
         Login
       </button>
     </form>

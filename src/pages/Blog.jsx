@@ -1,99 +1,136 @@
+// src/pages/Blog.jsx
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import "../blog.css"; // Add this line
 import { Link } from "react-router-dom";
+import HeaderBlog from "../components/HeaderBlog";
+import OtherPosts from "../components/OtherPosts.jsx";
+import PopularPosts from "../components/PopularPosts.jsx";
+import NewsletterSection from "../components/NewsletterSection.jsx";
+import FooterBlog from "../components/FooterBlog.jsx";
 
 const Blog = () => {
   const [principalPost, setPrincipalPost] = useState(null);
   const [otherPosts, setOtherPosts] = useState([]);
+  const [popularPosts, setPopularPosts] = useState([]);
+
   function stripHtml(html) {
     const tmp = document.createElement("div");
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || "";
   }
+
   useEffect(() => {
     const fetchPosts = async () => {
-      const querySnapshot = await getDocs(collection(db, "posts"));
-      const posts = [];
+      try {
+        const querySnapshot = await getDocs(collection(db, "posts"));
+        const posts = [];
 
-      querySnapshot.forEach((doc) => {
-        posts.push({ id: doc.id, ...doc.data() });
-      });
+        querySnapshot.forEach((doc) => {
+          posts.push({ id: doc.id, ...doc.data() });
+        });
 
-      const main = posts.find((post) => post.principal === true);
-      const others = posts
-        .filter((post) => post.principal !== true)
-        .slice(0, 4); // só 4 posts
+        const main = posts.find((post) => post.principal === true);
+        setPrincipalPost(main);
 
-      setPrincipalPost(main);
-      setOtherPosts(others);
+        const others = posts.filter((post) => post.principal !== true).slice(0, 4);
+        setOtherPosts(others);
+
+        const popular = posts.filter((post) => post.principal !== true).slice(4);
+        setPopularPosts(popular);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
     };
 
     fetchPosts();
   }, []);
 
+  // Structured Data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "Pixel Perfect Marcela Blog",
+    description: "Weekly updates on UX/UI design, case studies, and tips.",
+    url: "https://pixelperfectmarcela.com/blog",
+    blogPost: principalPost
+      ? [
+          {
+            "@type": "BlogPosting",
+            headline: principalPost.titulo,
+            image: principalPost.imagemCapa,
+            datePublished: principalPost.createdAt || new Date().toISOString(),
+            description: stripHtml(principalPost.conteudo).slice(0, 160),
+            author: {
+              "@type": "Person",
+              name: "Marcela",
+            },
+          },
+        ]
+      : [],
+  };
+
   return (
-    <div className="p-6 max-w-6xl mx-auto font-sans">
-      <h1 className="text-4xl font-bold mb-6">Blog</h1>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Coluna principal (ocupa 2/3) */}
-        {principalPost && (
-          <div className="md:col-span-2">
-            <Link to={`/blog/${principalPost.id}`}>
-              <div className="bg-gray-100 shadow rounded-lg overflow-hidden hover:shadow-xl transition">
-                {principalPost.imagemCapa && (
-                  <img
-                    src={principalPost.imagemCapa}
-                    alt={principalPost.titulo}
-                    className="w-full h-96 object-cover"
-                  />
-                )}
-                <div className="p-6">
-                  <span className="text-sm text-blue-800 font-semibold">
-                    UX/UI
-                  </span>
-                  <h2 className="text-3xl font-semibold mb-2 mt-1">
-                    {principalPost.titulo}
-                  </h2>
-                  <p className="text-gray-600 text-sm">
-                    {stripHtml(principalPost.conteudo).slice(0, 200)}...
-                  </p>
-                  <p className="mt-4 text-blue-600 font-medium">Ler mais →</p>
-                </div>
-              </div>
-            </Link>
-          </div>
-        )}
-
-        {/* Coluna dos 4 posts (2x2) */}
-        <div className="grid grid-cols-2 gap-4">
-          {otherPosts.map((post) => (
-            <Link to={`/blog/${post.id}`} key={post.id}>
-              <div className="bg-white rounded-lg shadow hover:shadow-md transition overflow-hidden">
-                {post.imagemCapa && (
-                  <div className="w-full aspect-square overflow-hidden">
+    <>
+      <meta
+        name="description"
+        content="Explore weekly UX/UI design stories, case studies, and tips on the Pixel Perfect Marcela blog."
+      />
+      <meta
+        name="keywords"
+        content="UX design, UI design, blog, case studies, design tips"
+      />
+      <meta property="og:title" content="Pixel Perfect Marcela Blog" />
+      <meta
+        property="og:description"
+        content="Weekly updates on UX/UI design, case studies, and tips."
+      />
+      <meta
+        property="og:image"
+        content={principalPost?.imagemCapa || "/default-image.jpg"}
+      />
+      <meta property="og:url" content="https://pixelperfectmarcela.com/blog" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      <main className="blogContainer" aria-labelledby="blog-heading">
+        <h1 id="blog-heading" className="sr-only">
+          Pixel Perfect Marcela Blog
+        </h1>
+        <HeaderBlog />
+        <section className="blogGrid" aria-label="Blog posts">
+          {principalPost && (
+            <article className="principalPost">
+              <Link to={`/blog/${principalPost.id}`} aria-label={`Read ${principalPost.titulo}`}>
+                <div className="postCardPrincipal">
+                  {principalPost.imagemCapa && (
                     <img
-                      src={post.imagemCapa}
-                      alt={post.titulo}
-                      className="w-full h-full object-cover"
+                      src={principalPost.imagemCapa}
+                      alt={`Featured image for ${principalPost.titulo}`}
+                      className="postImage principalImage"
                     />
+                  )}
+                  <div className="postContent">
+                    <span className="postCategoryPrincipal">UX/UI</span>
+                    <h2 className="postTitlePrincipal">{principalPost.titulo}</h2>
+                    <p className="postExcerpt">
+                      {stripHtml(principalPost.conteudo).slice(0, 130)}...
+                    </p>
+                    <span className="readMore">Read more</span>
                   </div>
-                )}
-                <div className="p-3">
-                  <span className="text-xs text-blue-800 font-semibold block mb-1">
-                    UX/UI
-                  </span>
-                  <h3 className="text-md font-bold leading-tight">
-                    {post.titulo}
-                  </h3>
                 </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
+              </Link>
+            </article>
+          )}
+          <OtherPosts posts={otherPosts} />
+        </section>
+        {popularPosts.length > 0 && (
+          <PopularPosts posts={popularPosts} stripHtml={stripHtml} />
+        )}
+        <NewsletterSection />
+        <FooterBlog />
+      </main>
+    </>
   );
 };
 

@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import LoginForm from "../components/LoginForm";
@@ -17,6 +16,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [showResetModal, setShowResetModal] = useState(false);
   const [error, setError] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   // Mantém usuário logado se já estiver autenticado
   useEffect(() => {
@@ -28,15 +28,35 @@ function Login() {
     return unsubscribe;
   }, [navigate]);
 
+  // Carrega email e senha salvos (se houver)
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("savedEmail");
+    const savedPassword = localStorage.getItem("savedPassword");
+
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+      setRememberMe(true);
+    }
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
+
+      if (rememberMe) {
+        localStorage.setItem("savedEmail", email);
+        localStorage.setItem("savedPassword", password);
+      } else {
+        localStorage.removeItem("savedEmail");
+        localStorage.removeItem("savedPassword");
+      }
+
       navigate("/dashboard");
     } catch (err) {
-      // Exibe mensagem de erro mais amigável
       switch (err.code) {
         case 'auth/invalid-email':
           setError('Email inválido.');
@@ -54,6 +74,10 @@ function Login() {
     }
   };
 
+  const handlePasswordReset = async () => {
+    // sua lógica de reset de senha (se já tiver ou quiser que eu adicione)
+  };
+
   return (
     <main className="mainLogin">
       <LoginHeader />
@@ -69,6 +93,8 @@ function Login() {
         error={error}
         setError={setError}
         setShowResetModal={setShowResetModal}
+        rememberMe={rememberMe}
+        setRememberMe={setRememberMe}
       />
 
       {showResetModal && (

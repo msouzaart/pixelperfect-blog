@@ -4,8 +4,8 @@ import React from "react";
 export default function ForgetPassword({ onClick }) {
   return (
 
-    <p style={{ marginTop: 12, textAlign: "center" }}>
-      <button
+    <p className="textForget" >
+      <button className="forgetPassword"
         type="button"
         onClick={onClick}
         style={{
