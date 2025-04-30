@@ -55,7 +55,7 @@ export default function Contact() {
       <HeaderBlog />
       <section className="contactSection" aria-labelledby="contact-heading">
         <div className="BackButtonContainer">
-          <Link to="/blog" className="backButton" aria-label="Back to blog">
+          <Link to="/" className="backButton" aria-label="Back to blog">
             Back to Blog
           </Link>
         </div>
@@ -155,7 +155,7 @@ export default function Contact() {
               >
                 Send Another Message
               </button>
-              <Link to="/blog" className="backButton" aria-label="Back to blog">
+              <Link to="/" className="backButton" aria-label="Back to blog">
                 Back to Blog
               </Link>
             </div>

@@ -55,7 +55,7 @@ function Login() {
         localStorage.removeItem("savedPassword");
       }
 
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       switch (err.code) {
         case 'auth/invalid-email':

@@ -30,7 +30,7 @@ export default function PostItem({ post, onDelete, onPrincipalChange }) {
       <div className="buttonCard">
         <button
           className="editBtn"
-          onClick={() => navigate(`/create-post/${post.id}`)}
+          onClick={() => navigate(`/admin/create-post/${post.id}`)}
         >
           <Pencil size={20} />
           Edit

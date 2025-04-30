@@ -236,7 +236,7 @@ const PostPage = () => {
       <main className="blogContainer" aria-labelledby="post-heading">
         <div className="postNavigation">
           <button
-            onClick={() => navigate("/blog")}
+            onClick={() => navigate("/")}
             className="backButtonPost"
             aria-label="Voltar para a página do blog"
           >

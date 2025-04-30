@@ -35,7 +35,7 @@ export default function Dashboard() {
 
   const handleLogout = async () => {
     await signOut(auth);
-    navigate("/login");
+    navigate("/dashboard/login");
   };
 
   const handleDelete = (postId) => {

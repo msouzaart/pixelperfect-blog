@@ -39,7 +39,7 @@ export default function PopularPosts({ posts, stripHtml }) {
       <Slider {...sliderSettings} className="popularPosts" aria-label="Popular posts carousel">
         {posts.map((post) => (
           <article key={post.id} className="postCardPopular">
-            <Link to={`/blog/${post.id}`} aria-label={`Read ${post.titulo}`}>
+            <Link to={`/${post.id}`} aria-label={`Read ${post.titulo}`}>
               {post.imagemCapa && (
                 <img
                   src={post.imagemCapa}

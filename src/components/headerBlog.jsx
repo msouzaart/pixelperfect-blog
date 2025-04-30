@@ -13,12 +13,12 @@ export default function HeaderBlog() {
           src={logoBlog}
           alt="Pixel Perfect Marcela Logo"
           className="logoClickable"
-          onClick={() => navigate("/blog")}
+          onClick={() => navigate("/")}
           role="button"
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
-              navigate("/blog");
+              navigate("/");
             }
           }}
         />
@@ -26,7 +26,7 @@ export default function HeaderBlog() {
       <nav aria-label="Main navigation">
         <ul className="naveHeader">
           <li>
-            <Link to="/contact" aria-label="Contact us" className="navLink">
+            <Link to="/blog/contact" aria-label="Contact us" className="navLink">
               Contact Us
             </Link>
           </li>

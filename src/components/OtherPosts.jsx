@@ -6,7 +6,7 @@ export default function OtherPosts({ posts }) {
     <section className="otherPosts" aria-label="Other blog posts">
       {posts.map((post) => (
         <article key={post.id} className="postCard">
-          <Link to={`/blog/${post.id}`} aria-label={`Read ${post.titulo}`}>
+          <Link to={`/${post.id}`} aria-label={`Read ${post.titulo}`}>
             {post.imagemCapa && (
               <img
                 src={post.imagemCapa}

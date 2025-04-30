@@ -101,7 +101,7 @@ const Blog = () => {
         <section className="blogGrid" aria-label="Blog posts">
           {principalPost && (
             <article className="principalPost">
-              <Link to={`/blog/${principalPost.id}`} aria-label={`Read ${principalPost.titulo}`}>
+              <Link to={`/${principalPost.id}`} aria-label={`Read ${principalPost.titulo}`}>
                 <div className="postCardPrincipal">
                   {principalPost.imagemCapa && (
                     <img

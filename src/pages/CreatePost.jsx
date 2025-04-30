@@ -1,7 +1,6 @@
 // src/pages/CreatePost.jsx - Corrigido
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+
 import PostEditor from "../components/PostEditor";
 import ImageUpload from "../components/ImageUpload";
 import {

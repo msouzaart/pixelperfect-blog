@@ -90,7 +90,7 @@ export default function NewsletterSection() {
           />
           <label htmlFor="opt-in">
             I agree to receive emails and accept the{" "}
-            <Link to="/privacy-policy" className="privacyLink">
+            <Link to="/blog/privacy-policy" className="privacyLink">
               Privacy Policy
             </Link>
             .

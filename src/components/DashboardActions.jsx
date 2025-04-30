@@ -10,7 +10,7 @@ export default function DashboardActions({ onLogout }) {
     <nav className="dashboard-actions" aria-label="Ações do dashboard">
 
       <button
-        onClick={() => navigate("/create-post")}
+        onClick={() => navigate("/admin/create-post")}
         className="btn btn-primary"
         aria-label="New Article"
       >
@@ -19,7 +19,7 @@ export default function DashboardActions({ onLogout }) {
 
       <span className="btnDash">
       <button
-        onClick={() => navigate("/blog")}
+        onClick={() => navigate("/")}
         className="btn btn-success"
         aria-label="View Blog"
       >
